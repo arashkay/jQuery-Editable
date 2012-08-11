@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tectual.com: jQuery Editable</title>
+    <meta charset="utf-8">
+    <meta itemprop="image" content="http://www.tectual.com/images/logo.png">
+    <meta property="og:image" content="http://www.tectual.com/images/logo.png" />
+    <script src="lib/jquery.min.js"></script>
+    <script src="jquery.editable.js"></script>
+    <script>
+      $(function(){
+        // editbale in div#group1
+        $('#group1').editables( 
+        { 
+          beforeEdit: function(field){
+            //console.log('"before edit"', this.text(), field); 
+            return true; /* optional */
+          },
+          beforeFreeze: function(display){ 
+            //console.log('"before freeze"', this.val(), display); 
+            return true; /* optional */
+          },
+          onEdit: function(){
+            //console.log('"on edit"', this);
+          },
+          onFreeze: function(){
+            //console.log('"on freeze"', this);
+          }
+        } );
+
+        // editbale in div#group2
+        // these samples are with 2 way connection for updating
+        $('#group2').editables( 
+        { 
+          beforeEdit: function(field){
+            field.val(this.text());
+          },
+          beforeFreeze: function(display){ 
+            display.text(this.val());
+          }
+        } );
+
+        // editbale in div#group3
+        // these samples are with 2 way connection for updating
+        $('#group3').editables( 
+        { 
+          beforeEdit: function(field){
+            if(this.data('updatable')) field.val(this.text());
+          },
+          beforeFreeze: function(display){ 
+            if(display.data('updatable')) display.text(this.val());
+          }
+        } );
+
+        // editbale in div#group3
+        // this sample shows freezing on more than one event
+        $('#group4').editables( 
+          { 
+            freezeOn: ['blur', 'keyup'] ,
+            beforeFreeze: function(display, ev){ if( ev.which!=13 ) return false; } // detect which key is pressed.
+          } 
+        );
+      });
+    </script>
+    <style>
+      div{
+        margin: 10px;
+      }
+      div span, label{
+        cursor: pointer;
+      }
+      .hidden{
+        display: none;      /* Use it to hide the fields initially, notice this
+                               class is used in HTML as well and assigned to the elements */
+      }
+      h2{
+        font-size: 20px;
+      }
+      h2 span{
+        border: #555 1px solid;
+        color: #444;
+        background: #F2E557;
+        padding: 4px;
+      }
+      h2 input{
+        border: none;
+        font-size: 20px;
+      }
+      textarea{
+        vertical-align: top;
+      }
+      #group3 span{
+        border: #036EB5 1px dashed;
+        background: #A2CCE8;
+        color: #036EB5;
+        padding: 5px 20px;
+      }
+      h1{ color: #1D547B }
+    </style>
+</head>
+<body>
+  <div id='group1'>
+    <h1>Simple</h1>
+    <div>
+      <label data-type="editable" data-for=".user-field">Click me!</label>
+      <input class="user-field hidden" value='some other value'>
+    </div>
+    <div>
+      <span data-type="editable" data-for="#user-password">And, click here to enter pasword here</span>
+      <input id="user-password" class='hidden' type="password">
+    </div>
+    <div>
+      <span data-type="editable" data-for=".texty-area">Don't forget me!</span>
+      <textarea class="texty-area hidden">server side loaded value different from text</textarea>
+    </div>
+    <p>
+    As you see you can have inline editor everywhere such as this "<span><label data-type='editable' data-for='.inline-editable'>This is an inline sample</label><textarea class='inline-editable'></textarea></span>" inline editor.
+    </p>
+  </div>
+  <div id='group2'>
+    <h1>Two-way connection</h1>
+    <div>
+      <span data-type="editable" data-for=".texty-area2">Don't forget me!</span>
+      <textarea class="texty-area2 hidden">server side loaded value different from text</textarea>
+    </div>
+    <h2> 
+      Editable header : 
+      <span><label data-type='editable' data-for='#header'>Click and edit me</label><input id='header'/></span>
+    </h2>
+  </div>
+  <div id='group3'>
+    <h1>Best way to treat both</h1>
+    <p> Use extra html attributes to seperate one which need to be updated from others. see source code. As you see username area is updatable and the password part is fixed</p>
+    <div>
+      <span data-type="editable" data-updatable='true' data-for="#user-name2">Username</span>
+      <input id="user-name2" class='hidden'>
+    </div>
+    <div>
+      <span data-type="editable" data-for="#user-password2">Password</span>
+      <input id="user-password2" class='hidden' type="password">
+    </div>
+  </div>
+  <div>
+    <h1>Ajax Calls</h1>
+    <p>To have ajax calls simply add them at one of the events such as onFreeze or beforeFreeze</p>
+  </div>
+  <div id='group4'>
+    <h1>More than one Event</h1>
+    <p>To Freeze the input for more than one event such as <b>blur</b> and <b>enter</b> pass an array of events</p>
+    <span data-type="editable" data-for="#mevents">Click and test Blur/Enter</span>
+    <input id="mevents" class='hidden'>
+  </div>
+</body>
+</html>
