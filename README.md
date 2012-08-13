@@ -14,4 +14,4 @@ Params
 
 Documentation 
 -------
-To find out more on how to use it and ask for more features please go to [Tectual.com](http://www.tectual.com.au)
+To find out more on how to use it and ask for more features please go to [jQuery Edtiable](http://www.tectual.com.au/posts/7/jQuery-Editable-Plugin-Best-In-Place-Editor-.html). This Plugin is created by Arash @ [Tectual.com](http://www.tectual.com.au)
