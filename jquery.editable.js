@@ -1,13 +1,12 @@
 /*
  *
- * jQuery Editables 1.0.1 (jimk branch)
+ * jQuery Editables 1.0.1.3 (jimk branch)
  * 
  * Date: Aug 11 2012
  * Source: www.tectual.com.au, www.arashkarimzadeh.com
  * Author: Arash Karimzadeh (arash@tectual.com.au)
  * Contributors: Jim Kinsman (relipse@gmail.com)
  * 
- *
  * Copyright (c) 2012 Tectual Pty. Ltd.
  * http://www.opensource.org/licenses/mit-license.php
  *
@@ -42,11 +41,15 @@ $.fn.editables = function(options, arg2){
               if(bf==false) return;
               t.hide();
               $this.show();
+            
               if (bf === 'abort'){
                  if (t.data('oldvalue') !== undefined){
                     t.val(t.data('oldvalue'));
                  }
                  return; //do not call onFreeze, because we aborted freeze
+              }else if (t.data('oldvalue') == t.val()){
+                 //value never changed
+                 return;
               }
               t.trigger('onFreeze');
          },
