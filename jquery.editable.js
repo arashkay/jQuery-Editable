@@ -1,6 +1,6 @@
 /*
  *
- * jQuery Editables 1.0.1
+ * jQuery Editables 1.0.1 (jimk branch)
  * 
  * Date: Aug 11 2012
  * Source: www.tectual.com.au, www.arashkarimzadeh.com
@@ -9,6 +9,9 @@
  * Copyright (c) 2012 Tectual Pty. Ltd.
  * http://www.opensource.org/licenses/mit-license.php
  *
+ * 27-Jan-2013 JimK: Added beforeFreeze abort option to 
+ *     abort editing (using esc key would be a common implementation)
+ *     Stored old data in data-oldvalue="foobar"
  */
 (function($){
  
@@ -24,9 +27,16 @@ $.fn.editables = function(options){
       var $this = $(this);
       var fn = function(ev){
         var t = $($this.data('for'));
-        if(opts.beforeFreeze.call(t, $this, ev)==false) return;
+        var bf = opts.beforeFreeze.call(t, $this, ev);
+        if(bf==false) return;
         t.hide();
         $this.show();
+        if (bf === 'abort'){
+           if (t.data('oldvalue') !== undefined){
+              t.val(t.data('oldvalue'));
+           }
+           return; //do not call onFreeze, because we aborted freeze
+        }
         t.trigger('onFreeze');
       };
       var evs= {};
@@ -38,6 +48,7 @@ $.fn.editables = function(options){
         if(opts.beforeEdit.call($this, t, ev)==false) return;
         $this.hide();
         t.show().focus();
+        t.data('oldvalue', t.val());
         $this.trigger('onEdit');
       }
       var evs = {};
