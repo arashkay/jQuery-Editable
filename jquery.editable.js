@@ -10,7 +10,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  *
  */
-(function($){
+(($ => {
  
 $.fn.editables = function(options){
   
@@ -22,7 +22,7 @@ $.fn.editables = function(options){
   $('[data-type=editable]', this).each(
     function(){
       var $this = $(this);
-      var fn = function(ev){
+      var fn = ev => {
         var t = $($this.data('for'));
         if(opts.beforeFreeze.call(t, $this, ev)==false) return;
         t.hide();
@@ -33,7 +33,7 @@ $.fn.editables = function(options){
       $.each( opts.freezeOn, function(){ evs[this] = fn; } );
       $($this.data('for')).hide().bind('onFreeze', opts.onFreeze).bind(evs);
       
-      var fn = function(ev){
+      var fn = ev => {
         var t = $($this.data('for'));
         if(opts.beforeEdit.call($this, t, ev)==false) return;
         $this.hide();
@@ -56,6 +56,6 @@ $.fn.editables.options = {
   onFreeze: $.noop      /* Function: This function bind to edit field as event */
 }
 
-})(jQuery);
+}))(jQuery);
 
 
